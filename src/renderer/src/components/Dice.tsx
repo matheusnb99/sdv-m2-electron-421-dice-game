@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
+import { useState } from 'react'
 
 type Props = {
-  diceColor: string | undefined
   rollType: string
   diceNo: number
   value: number
@@ -13,7 +13,17 @@ const colors = {
   green: '#3bd0c3'
 }
 
-const Dice: React.FC<Props> = ({ diceColor = 'red', rollType, diceNo, value }) => {
+const rollTypes = {
+  even: 'even-roll',
+  odd: 'odd-roll'
+}
+
+const randomColor = () => {
+  const keys = Object.keys(colors)
+  return colors[keys[(keys.length * Math.random()) << 0]]
+}
+
+const Dice: React.FC<Props> = ({ rollType, diceNo, value }) => {
   const renderDots = (numDots) => {
     const dots: JSX.Element[] = []
     for (let i = 0; i < numDots; i++) {
@@ -22,16 +32,19 @@ const Dice: React.FC<Props> = ({ diceColor = 'red', rollType, diceNo, value }) =
     return dots
   }
 
+  const [color, setColor] = useState(randomColor())
+  console.log(rollTypes[rollType])
+
   return (
     <ol
-      className={`die-list grid grid-cols-[1fr] grid-rows-[1fr] h-24 list-none w-24 cursor-pointer ${rollType}`}
+      className={`die-list grid grid-cols-[1fr] grid-rows-[1fr] h-24 list-none w-24 cursor-pointer ${rollTypes[rollType]}`}
       data-roll={value}
       id={`die-${diceNo}`}
     >
       {[1, 2, 3, 4, 5, 6].map((side) => (
         <li
           key={side}
-          style={{ backgroundColor: diceColor }}
+          style={{ backgroundColor: color }}
           className="die-item grid grid-cols-3 grid-rows-3 h-full w-full p-4"
           data-side={side}
         >
