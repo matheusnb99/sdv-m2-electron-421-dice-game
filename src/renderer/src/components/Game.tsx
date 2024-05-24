@@ -57,9 +57,18 @@ const Game: FunctionComponent<GameProps> = ({ id, luckyDraw = false }) => {
                 ])
               }}
             >
-              Restart (game over)
+              Play Again
             </button>
           )}
+          <button
+            className="hover:cursor-pointer"
+            onClick={() => {
+              restartGame()
+              setGameHistory([])
+            }}
+          >
+            Restart
+          </button>
         </div>
       </div>
     </div>
